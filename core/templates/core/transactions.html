@@ -1,0 +1,29 @@
+{% extends 'core/base.html' %}
+
+{% block content %}
+<h2>История транзакций</h2>
+<table border="1">
+  <tr>
+    <th>Дата</th><th>Сумма</th><th>Дебет</th><th>Кредит</th><th>Описание</th><th>Действия</th>
+  </tr>
+  {% for t in transactions %}
+    <tr>
+      <td>{{ t.created_at|date:"d.m.Y H:i" }}</td>
+      <td>{{ t.amount }}</td>
+      <td>{{ t.debit_account }}</td>
+      <td>{{ t.credit_account }}</td>
+      <td>{{ t.description }}</td>
+      <td>
+        {% if not t.is_cancelled %}
+          <form method="post" action="{% url 'cancel_transaction' t.id %}" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit" onclick="return confirm('Отменить транзакцию #{{ t.id }}?');">Отменить</button>
+          </form>
+        {% else %}
+          Отменена
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+</table>
+{% endblock %}

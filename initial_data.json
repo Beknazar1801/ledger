@@ -1,0 +1,55 @@
+[
+    {
+      "model": "core.balanceitem",
+      "pk": 1,
+      "fields": {
+        "name": "Активы"
+      }
+    },
+    {
+      "model": "core.balanceitem",
+      "pk": 2,
+      "fields": {
+        "name": "Пассивы"
+      }
+    },
+    {
+      "model": "core.balancegroup",
+      "pk": 1,
+      "fields": {
+        "name": "Касса",
+        "item": 1
+      }
+    },
+    {
+      "model": "core.balancegroup",
+      "pk": 2,
+      "fields": {
+        "name": "Счета клиентов",
+        "item": 2
+      }
+    },
+    {
+      "model": "core.account",
+      "pk": 1,
+      "fields": {
+        "number": "1011000001",
+        "name": "Касса",
+        "type": "active",
+        "balance": "0.00",
+        "group": 1
+      }
+    },
+    {
+      "model": "core.account",
+      "pk": 2,
+      "fields": {
+        "number": "2211000001",
+        "name": "Счета клиентов",
+        "type": "passive",
+        "balance": "0.00",
+        "group": 2
+      }
+    }
+  ]
+  

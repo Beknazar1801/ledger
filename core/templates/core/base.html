@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Учёт по МСФО 9</title>
+</head>
+<body>
+    <nav>
+        <a href="{% url 'accounts' %}">🏦 Счета</a> |
+        <a href="{% url 'create_transaction' %}">➕ Новая транзакция</a> |
+        <a href="{% url 'transactions' %}">🧾 История</a>
+    </nav>
+    <hr>
+
+    {% block content %}
+    {% endblock %}
+</body>
+</html>
