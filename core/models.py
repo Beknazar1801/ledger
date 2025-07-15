@@ -8,15 +8,22 @@ import random
 
 
 class BalanceItem(models.Model):
-    name = models.CharField(max_length=255)
+    name = models.CharField(max_length=255, verbose_name="Наименование статьи")
+    class Meta:
+        verbose_name = "Статья баланса"
+        verbose_name_plural = "Статьи баланса"
 
     def __str__(self):
         return self.name
 
 
 class BalanceGroup(models.Model):
-    item = models.ForeignKey(BalanceItem, on_delete=models.CASCADE, related_name='groups')
-    name = models.CharField(max_length=255)
+    item = models.ForeignKey(BalanceItem, on_delete=models.CASCADE, related_name='groups', verbose_name="Статья баланса")
+    name = models.CharField(max_length=255, verbose_name="Наименование группы")
+    
+    class Meta:
+        verbose_name = "Балансовые группы"
+        verbose_name_plural = "Балансовая группа"
 
     def __str__(self):
         return f"{self.name} ({self.item.name})"
@@ -32,23 +39,23 @@ def generate_account_number():
     return ''.join([str(random.randint(0, 9)) for _ in range(10)])
 
 class Account(models.Model):
-    group = models.ForeignKey(BalanceGroup, on_delete=models.CASCADE, related_name='accounts')
-    number = models.CharField(max_length=10, unique=True, default=generate_account_number)
-    name = models.CharField(max_length=255)
-    type = models.CharField(max_length=10, choices=ACCOUNT_TYPES)
-    balance = models.DecimalField(max_digits=18, decimal_places=2, default=0)
+    group = models.ForeignKey(BalanceGroup, on_delete=models.CASCADE, related_name='accounts', verbose_name="Балансовая группа")
+    number = models.CharField(max_length=10, unique=True, default=generate_account_number,verbose_name="Номер счёта")
+    name = models.CharField(max_length=255, verbose_name="Наименование счёта")
+    type = models.CharField(max_length=10, choices=ACCOUNT_TYPES, verbose_name="Тип счёта")
+    balance = models.DecimalField(max_digits=18, decimal_places=2, default=0, verbose_name="Баланс")
 
     def __str__(self):
         return f"{self.number} - {self.name}"
 
 
 class Transaction(models.Model):
-    debit_account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='debit_transactions')
-    credit_account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='credit_transactions')
-    amount = models.DecimalField(max_digits=18, decimal_places=2)
-    description = models.TextField(blank=True)
-    created_at = models.DateTimeField(auto_now_add=True)
-    is_cancelled = models.BooleanField(default=False)
+    debit_account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='debit_transactions', verbose_name="Дебет")
+    credit_account = models.ForeignKey(Account, on_delete=models.CASCADE, related_name='credit_transactions', verbose_name="Кредит")
+    amount = models.DecimalField(max_digits=18, decimal_places=2, verbose_name="Сумма")
+    description = models.TextField(blank=True, verbose_name="Описание")
+    created_at = models.DateTimeField(auto_now_add=True,verbose_name="Дата и время")
+    is_cancelled = models.BooleanField(default=False, verbose_name="Аннулирована")
 
     def clean(self):
         errors = {}
